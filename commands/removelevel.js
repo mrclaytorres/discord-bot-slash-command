@@ -16,6 +16,19 @@ module.exports = {
                 .setRequired(true)
                 .addChoices(...levels.map(level => ({ name: level, value: level })))),
     async execute(interaction) {
+
+      //Role check
+      const member = interaction.member;
+      const allowedRoles = ['Owner', 'Staff'];
+
+      // Check if the member has at least one of the allowed roles
+      const hasAllowedRole = member.roles.cache.some(role => allowedRoles.includes(role.name));
+      if (!hasAllowedRole) {
+          return await interaction.reply({
+            content: '❌ You do not have permission to use this command.',
+            epemeral: true
+          });
+      }
         try {
             await interaction.deferReply({ ephemeral: true });
 
