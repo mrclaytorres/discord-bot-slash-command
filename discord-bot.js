@@ -1,61 +1,41 @@
-const { REST, Routes, SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { Client, GatewayIntentBits, Collection } = require('discord.js');
 require('dotenv').config();
+const fs = require('fs');
 
-const levels = [
-    "1 Diaphragmatic Support",
-    "2 Open Throat",
-    "3 Vocal Tract Shaping",
-    "4 Build Head Voice",
-    "5 Passaggio & Mixed Voice",
-    "6 Glottal Compression",
-    "7 Contiguous Phrase Singing",
-    "8 Hyper Glottal Compression",
-    "9 Master Sensei"
-];
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,         // Required for slash commands
+        GatewayIntentBits.GuildMembers    // Required for managing roles
+    ]
+});
 
-const commands = levels.map((level, index) => 
-    new SlashCommandBuilder()
-        .setName(`passlevel${index + 1}`)
-        .setDescription(`Assigns the "${level}" role to a user.`)
-        .addUserOption(option =>
-            option.setName('user')
-                .setDescription('The user to pass the level')
-                .setRequired(true)
-        )
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-        .toJSON()
-);
+client.commands = new Collection();
 
-// Add a remove level command
-const removeCommand = new SlashCommandBuilder()
-    .setName('removelevel')
-    .setDescription('Removes a specified level role from a user.')
-    .addIntegerOption(option =>
-        option.setName('level')
-            .setDescription('The level to remove (1-9)')
-            .setRequired(true)
-    )
-    .addUserOption(option =>
-        option.setName('user')
-            .setDescription('The user to remove the level from')
-            .setRequired(true)
-    )
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .toJSON();
+// Load all commands from the commands folder
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.data.name, command);
+}
 
-commands.push(removeCommand);
+client.once('ready', () => {
+    console.log(`Logged in as ${client.user.tag}`);
+});
 
-const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isCommand()) return;
 
-(async () => {
+    const command = client.commands.get(interaction.commandName);
+
+    if (!command) return;
+
     try {
-        console.log('Started refreshing application (/) commands.');
-        await rest.put(
-            Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
-            { body: commands }
-        );
-        console.log('Successfully reloaded application (/) commands.');
+        await command.execute(interaction);
     } catch (error) {
-        console.error(error);
+        console.error('[ERROR] Command failed:', error);
+        await interaction.reply({ content: 'There was an error executing this command.', ephemeral: true });
     }
-})();
+});
+
+// Log in to Discord with your app's token
+client.login(process.env.DISCORD_TOKEN);
