@@ -16,7 +16,21 @@ module.exports = {
                 .setRequired(true)
                 .addChoices(...levels.map(level => ({ name: level, value: level })))),
     async execute(interaction) {
-        try {
+
+      //Role check
+      const member = interaction.member;
+      const allowedRoles = ['Owner', 'Staff'];
+
+      // Check if the member has at least one of the allowed roles
+      const hasAllowedRole = member.roles.cache.some(role => allowedRoles.includes(role.name));
+      if (!hasAllowedRole) {
+          return await interaction.reply({
+            content: '❌ You do not have permission to use this command.',
+            epemeral: true
+          });
+      }
+      
+      try {
             await interaction.deferReply({ ephemeral: true });
 
             const member = interaction.guild.members.cache.get(interaction.options.getUser('user').id);
@@ -32,7 +46,7 @@ module.exports = {
             await interaction.editReply(`Role "${level}" added successfully!`);
         } catch (error) {
             console.error('[ERROR] Failed to add role:', error);
-            await interaction.editReply('An error occurred while processing the command.');
+            await interaction.editReply('❌ An error occurred while processing the command.');
         }
     }
 };
