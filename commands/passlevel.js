@@ -1,5 +1,5 @@
 // commands/passlevel.js
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, ChannelType } = require('discord.js');
 const levels = require('../levels');
 
 module.exports = {
@@ -44,6 +44,19 @@ module.exports = {
 
             await member.roles.add(role);
             await interaction.editReply(`Role "${level}" added successfully!`);
+
+            // Send Announcement
+            const announcementChannelName = 'announcements'; // Set the announcement channel name here
+            const announcementChannel = interaction.guild.channels.cache.find(
+                channel => channel.name === announcementChannelName && channel.type === ChannelType.GuildText
+            );
+
+            if (announcementChannel) {
+                announcementChannel.send(`🎉 Congratulations ${member}! You have passed **${role}**!`);
+            } else {
+                console.error(`[ERROR] Announcement channel "${announcementChannelName}" not found.`);
+            }
+
         } catch (error) {
             console.error('[ERROR] Failed to add role:', error);
             await interaction.editReply('❌ An error occurred while processing the command.');
