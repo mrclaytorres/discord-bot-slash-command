@@ -1,6 +1,9 @@
 // commands/passlevel.js
 const { SlashCommandBuilder, ChannelType } = require('discord.js');
 const levels = require('../levels');
+require('dotenv').config();
+
+const ICON_BASE_URI = process.env.ICON_BASE_URI;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -51,8 +54,40 @@ module.exports = {
                 channel => channel.name === announcementChannelName && channel.type === ChannelType.GuildText
             );
 
+            // belt icon picker
+            let icon = '';
+            switch (role) {
+                case '9 Master Sensei':
+                    icon = `${ICON_BASE_URI}/9-a.png`
+                    break;
+                case '8 Hyper Glottal Compression':
+                    icon = `${ICON_BASE_URI}/8.png`
+                    break;
+                case '7 Contiguous Phrase Singing':
+                    icon = `${ICON_BASE_URI}/7.png`
+                    break;
+                case '6 Glottal Compression':
+                    icon = `${ICON_BASE_URI}/6.png`
+                    break;
+                case '5 Passaggio & Mixed Voice':
+                    icon = `${ICON_BASE_URI}/5.png`
+                    break;
+                case '4 Build Head Voice':
+                    icon = `${ICON_BASE_URI}/4.png`
+                    break;
+                case '3 Vocal Tract Shaping':
+                    icon = `${ICON_BASE_URI}/3.png`
+                    break;
+                case '2 Open Throat':
+                    icon = `${ICON_BASE_URI}/2.png`
+                    break;
+                default:
+                    icon = `${ICON_BASE_URI}/1.png`
+                    break;
+            }
+
             if (announcementChannel) {
-                announcementChannel.send(`🎉 Congratulations ${member}! You have passed **${role}**!`);
+                announcementChannel.send(`🎉 Congratulations ${member}! You have passed ${icon} **${role}**!`);
             } else {
                 console.error(`[ERROR] Announcement channel "${announcementChannelName}" not found.`);
             }
