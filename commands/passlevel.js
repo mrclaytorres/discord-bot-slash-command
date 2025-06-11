@@ -1,6 +1,9 @@
 // commands/passlevel.js
 const { SlashCommandBuilder, ChannelType } = require('discord.js');
 const levels = require('../levels');
+require('dotenv').config();
+
+const ICON_BASE_URI = process.env.ICON_BASE_URI;
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -51,8 +54,23 @@ module.exports = {
                 channel => channel.name === announcementChannelName && channel.type === ChannelType.GuildText
             );
 
+            // belt icon picker
+            const beltEmojis = {
+                '9 Master Sensei': '<:belt9:1382188154123190343>',
+                '8 Hyper Glottal Compression': '<:belt8:1382188116646957198>',
+                '7 Contiguous Phrase Singing': '<:belt7:1382188069532471420>',
+                '6 Glottal Compression': '<:belt6:1382188032051908719>',
+                '5 Passaggio & Mixed Voice': '<:belt5:1382187991304503336>',
+                '4 Build Head Voice': '<:belt4:1382187944059736094>',
+                '3 Vocal Tract Shaping': '<:belt3:1382187905166086295>',
+                '2 Open Throat': '<:belt2:1382187862950412411>',
+                '1 Diaphragmatic Support': '<:belt1:1382187715986198618>'
+            };
+
+            let icon = beltEmojis[role] || beltEmojis['1 Diaphragmatic Support'];
+
             if (announcementChannel) {
-                announcementChannel.send(`🎉 Congratulations ${member}! You have passed **${role}**!`);
+                announcementChannel.send(`🎉 Congratulations ${member}! You have passed ${icon} **${role}**!`);
             } else {
                 console.error(`[ERROR] Announcement channel "${announcementChannelName}" not found.`);
             }
