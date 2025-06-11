@@ -67,7 +67,7 @@ module.exports = {
                 '1 Diaphragmatic Support': '<:belt1:1382187715986198618>'
             };
 
-            let icon = beltEmojis[role] || beltEmojis['1 Diaphragmatic Support'];
+            let icon = beltEmojis[role];
 
             if (announcementChannel) {
                 announcementChannel.send(`🎉 Congratulations ${member}! You have passed ${icon} **${role}**!`);
