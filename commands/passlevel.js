@@ -58,31 +58,31 @@ module.exports = {
             let icon = '';
             switch (role) {
                 case '9 Master Sensei':
-                    icon = `${ICON_BASE_URI}/9-a.png`
+                    icon = ':belt9:'
                     break;
                 case '8 Hyper Glottal Compression':
-                    icon = `${ICON_BASE_URI}/8.png`
+                    icon = ':belt8:'
                     break;
                 case '7 Contiguous Phrase Singing':
-                    icon = `${ICON_BASE_URI}/7.png`
+                    icon = ':belt7:'
                     break;
                 case '6 Glottal Compression':
-                    icon = `${ICON_BASE_URI}/6.png`
+                    icon = ':belt6:'
                     break;
                 case '5 Passaggio & Mixed Voice':
-                    icon = `${ICON_BASE_URI}/5.png`
+                    icon = ':belt5:'
                     break;
                 case '4 Build Head Voice':
-                    icon = `${ICON_BASE_URI}/4.png`
+                    icon = ':belt4:'
                     break;
                 case '3 Vocal Tract Shaping':
-                    icon = `${ICON_BASE_URI}/3.png`
+                    icon = ':belt3:'
                     break;
                 case '2 Open Throat':
-                    icon = `${ICON_BASE_URI}/2.png`
+                    icon = ':belt2:'
                     break;
                 default:
-                    icon = `${ICON_BASE_URI}/1.png`
+                    icon = ':belt1:'
                     break;
             }
 
