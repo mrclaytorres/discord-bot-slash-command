@@ -69,6 +69,8 @@ module.exports = {
 
             let icon = beltEmojis[role];
 
+            console.log("icon", icon);
+
             if (announcementChannel) {
                 announcementChannel.send(`🎉 Congratulations ${member}! You have passed ${icon} **${role}**!`);
             } else {
