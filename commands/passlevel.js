@@ -67,6 +67,8 @@ module.exports = {
                 '1 Diaphragmatic Support': '<:belt1:1382187715986198618>'
             };
 
+            console.log('role', role);
+
             let icon = beltEmojis[role];
 
             console.log("icon", icon);
