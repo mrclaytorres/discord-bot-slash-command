@@ -13,6 +13,7 @@ const client = new Client({
 const GUILD_ID = process.env.GUILD_ID;
 const ROLE_ID = process.env.ROLE_ID;
 const SPECIFIC_INVITE_CODE = process.env.SPECIFIC_INVITE_CODE;
+const NEW_MEMBER_REDIRECT_URI = process.env.NEW_MEMBER_REDIRECT_URI;
 const DISCORD_SERVER_NAME = process.env.DISCORD_SERVER_NAME;
 
 let invites = new Map();
