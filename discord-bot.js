@@ -13,6 +13,7 @@ const client = new Client({
 const GUILD_ID = process.env.GUILD_ID;
 const ROLE_ID = process.env.ROLE_ID;
 const SPECIFIC_INVITE_CODE = process.env.SPECIFIC_INVITE_CODE;
+const DISCORD_SERVER_NAME = process.env.DISCORD_SERVER_NAME;
 
 let invites = new Map();
 
@@ -82,7 +83,7 @@ client.on("guildMemberAdd", async (member) => {
     console.log(`DM channel created with ${member.user.tag}.`);
 
     // The welcome message with the link to your specific new member OAuth2 endpoint
-    const welcomeMessage = `Hello ${member.user.username}! Welcome to the KTVA server!
+    const welcomeMessage = `Hello ${member.user.username}! Welcome to the ${DISCORD_SERVER_NAME} server!
 
     To get started and unlock full access, please click the link below to connect your account and get your exclusive roles:
     ${NEW_MEMBER_REDIRECT_URI}
